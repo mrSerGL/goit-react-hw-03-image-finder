@@ -5,13 +5,17 @@ class ImageGallery extends Component {
   state = {};
 
   render() {
+    console.log(this.props.firstPage);
     return (
       <>
-        <li className={css.galleryItem}>
-          <img src="" alt="" />
-        </li>
+        {this.props.firstPage.map(item => (
+          <li className={css.galleryItem} key={item.id}>
+            <img src={item.previewURL} alt="" />
+          </li>
+        ))}
       </>
     );
   }
 }
+
 export default ImageGallery;

@@ -1,6 +1,12 @@
-.App {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 16px;
-    padding-bottom: 24px;
-  }
+    .App {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      gap: 16px;
+    
+      width: 100%;
+    }
+
+ 

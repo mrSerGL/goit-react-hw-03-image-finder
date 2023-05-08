@@ -1,53 +1,44 @@
 import React, { Component } from 'react';
+import Notiflix from 'notiflix';
 import Searchbar from './Searchbar';
+import GalleryService from '../services/GalleryService';
 import ImageGallery from './ImageGallery';
-// import GalleryService from '../services/GalleryService';
 import css from './App.module.css';
 
 export default class App extends Component {
   state = {
-    name: '',
+    searchQuery: '',
     firstPage: [],
   };
 
-  getName = name => {
-    this.setState({ name: name });
+  onSubmit = async searchQuery => {
+    this.setState({ searchQuery: searchQuery });
+
+    if (searchQuery === '') {
+      Notiflix.Notify.info('You cannot search by empty field, try again.');
+      return;
+    }
+
+    const galleryService = new GalleryService();
+    galleryService.name = searchQuery;
+
+    try {
+      await galleryService.getImages().then(response => {
+        console.log(response.hits);
+        this.setState({ firstPage: response.hits });
+      });
+    } catch (error) {
+      console.log('getImages say:', error.message);
+    }
   };
-
-  getPictures = images => {
-    this.setState({ firstPage: images });
-  };
-
-  // async getImages(event) {
-  //   event.preventDefault();
-  //   // console.log('click on button');
-  //   // console.log(this.state.name);
-
-  //   const galleryService = new GalleryService();
-  //   galleryService.name = this.state.name;
-
-  //   try {
-  //     await galleryService.getImages().then(response => {
-  //       console.log(response.hits);
-  //       this.setState({ firstPage: response.hits });
-
-  //       console.log(this.state.firstPage);
-  //     });
-  //   } catch (error) {
-  //     console.log('getImages say:', error.message);
-  //   }
-  // }
 
   render() {
     return (
       <div>
-        {/* <Searchbar getName={this.getName} onClick={this.getImages.bind()} /> */}
-        <Searchbar getName={this.getName} getPictures={this. getPictures}/>
-
+        <Searchbar onSubmit={this.onSubmit} />
         <ul className={css.App}>
-          <ImageGallery name={this.state.name} />
+          <ImageGallery firstPage={this.state.firstPage} />
         </ul>
-
       </div>
     );
   }

@@ -1,51 +1,34 @@
 import React, { Component } from 'react';
-import debounce from 'lodash.debounce';
-import GalleryService from '../../services/GalleryService';
 import css from './Searchbar.module.css';
 
-// const galleryService = new GalleryService();
 
 class Searchbar extends Component {
   state = {
-    name: '',
-    firstPage: [],
+    searchQuery: '',
   };
 
-  onChangeInputDebounced = debounce(event => {
-    const inputValue = event.target.value.trim();
-    console.log('inputValue:',inputValue)
+  onChangeInput = event => {
+    let inputValue = event.target.value.trim();
+
     if (inputValue.length === 0) {
-      alert('enter name');
+      alert('Enter request text!');
       return;
     }
-    this.setState({ name: inputValue });
-    this.props.getName(inputValue);
-  }, 250);
+    this.setState({ searchQuery: inputValue });
+  
+  };
 
- async getImages(event) {
+  handleSubmit = event => {
     event.preventDefault();
-    console.log('click on button');
-    console.log(this.state.name);
-
-    const galleryService = new GalleryService();
-    galleryService.name = this.state.name;
-
-    try {
-      await galleryService.getImages().then(response => {
-        console.log(response.hits);
-        this.setState({ firstPage: response.hits });
-        console.log(this.state.firstPage);
-      });
-    } catch (error) {
-      console.log('getImages say:', error.message);
-    }
-  }
+    this.props.onSubmit(this.state.searchQuery);
+    // this.setState({ inputData: '' });
+  };
 
   render() {
     return (
       <>
         <header className={css.searchbar}>
-          <form className={css.form} onSubmit={this.getImages}>
+          <form className={css.form} onSubmit={this.handleSubmit}>
             <button
               type="submit"
               className={css.button}
@@ -60,7 +43,7 @@ class Searchbar extends Component {
               autoComplete="off"
               autoFocus
               placeholder="Search images and photos"
-              onChange={this.onChangeInputDebounced}
+              onChange={this.onChangeInput}
             />
           </form>
         </header>

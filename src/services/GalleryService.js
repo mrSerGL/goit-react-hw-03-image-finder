@@ -14,7 +14,7 @@ const searchParams = new URLSearchParams({
 });
 
 export default class GalleryService {
-    constructor() {
+    constructor(name) {
       this.name = '';
       this.page = 1;
 
