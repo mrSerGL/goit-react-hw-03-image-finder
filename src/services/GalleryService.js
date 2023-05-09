@@ -12,7 +12,6 @@ const searchParams = new URLSearchParams({
   safesearch: 'false',
   per_page: 12,
 });
-
 export default class GalleryService {
     constructor(name) {
       this.name = '';
@@ -21,6 +20,7 @@ export default class GalleryService {
     }
   
     async getImages(name) {
+      console.log(this.props)
       const url = `${BASE_URL}q=${this.name}&page=${this.page}&${searchParams}`;
   
       const response = await axios.get(url);

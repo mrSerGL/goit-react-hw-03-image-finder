@@ -34,11 +34,11 @@ class Searchbar extends Component {
               className={css.button}
               onClick={this.props.onClick}
             >
-              <span className={css.buttonlabel}>Search</span>
+              <span className={css.buttonlabel}></span>
             </button>
 
             <input
-              className={css.inpu}
+              className={css.input}
               type="text"
               autoComplete="off"
               autoFocus
