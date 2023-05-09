@@ -6,14 +6,15 @@ class ImageGallery extends Component {
   state = {};
 
   render() {
-    console.log(this.props.firstPage);
-
+    const { firstPage, onClickImage } = this.props;
+    if (!firstPage) return null;
+  
     return (
       <>
         {this.props.firstPage.map(({ id, webformatURL, tags, largeImageURL }) => (
           <li className={css.galleryItem} key={id}>
             <img 
-            onClick={() => this.props.onClickImage(largeImageURL)}
+            onClick={() => onClickImage(largeImageURL)}
             src={webformatURL} 
             alt={tags}
             largeimage={largeImageURL} />

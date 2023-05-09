@@ -19,22 +19,27 @@ export default class App extends Component {
     largeImageURL: '',
   };
 
-  onSubmit = async searchQuery => {
+  onSubmit = searchQuery => {
     if (searchQuery === '') {
       Notiflix.Notify.info('You cannot search by empty field, try again.');
       return;
     }
 
-    this.setState({ searchQuery: searchQuery });
-    this.setState({ isLoading: true });
+    this.setState({
+      searchQuery: searchQuery,
+      isLoading: true,
+    });
 
     const galleryService = new GalleryService();
     galleryService.name = searchQuery;
 
     try {
-      await galleryService.getImages(this.state.searchQuery).then(response => {
-        this.setState({ firstPage: response.hits });
-        this.setState({ isLoading: false });
+      galleryService.getImages(this.state.searchQuery).then(response => {
+        this.setState({
+          firstPage: response.hits,
+          isLoading: false,
+        });
+
         if (response.hits.length < 12) {
           this.setState({ showBtn: false });
         }
@@ -44,7 +49,6 @@ export default class App extends Component {
         if (response.hits.length === 0) {
           Notiflix.Notify.failure('No matches found!');
         }
-
       });
     } catch (error) {
       console.log('onSubmit say:', error.message);
@@ -52,21 +56,19 @@ export default class App extends Component {
   };
 
   onNextPage = () => {
-    const nextPage = this.state.page + 1;
-    this.setState({
-      page: nextPage,
+    this.setState(prevState => ({
+      page: prevState.page + 1,
       isLoading: true,
-    });
-
+    }));
+  
     const galleryService = new GalleryService();
     galleryService.name = this.state.searchQuery;
-    galleryService.page = nextPage;
-
+    galleryService.page = this.state.page + 1;
+  
     try {
-      galleryService.getImages().then(response => {
-        const newImages = response.hits;
+      galleryService.getImages(this.state.searchQuery).then(response => {
         this.setState(prevState => ({
-          firstPage: [...prevState.firstPage, ...newImages],
+          firstPage: [...prevState.firstPage, ...response.hits],
           isLoading: false,
         }));
       });
@@ -88,7 +90,10 @@ export default class App extends Component {
       <div className={css.container}>
         <Searchbar onSubmit={this.onSubmit} />
         <ul className={css.App}>
-          <ImageGallery firstPage={this.state.firstPage} onClickImage={this.onClickImage}/>
+          <ImageGallery
+            firstPage={this.state.firstPage}
+            onClickImage={this.onClickImage}
+          />
         </ul>
         {this.state.isLoading && <Loader />}
         {/* <Button onNextPage={this.onNextPage} /> */}
@@ -97,9 +102,8 @@ export default class App extends Component {
           <Modal
             largeImageURL={this.state.largeImageURL}
             onModalClose={this.onModalClose}
-            />
+          />
         )}
-        
       </div>
     );
   }

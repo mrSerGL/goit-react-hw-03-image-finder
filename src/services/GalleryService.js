@@ -18,7 +18,7 @@ export default class GalleryService {
   }
 
   async getImages(name) {
-    console.log(this.props);
+
     const url = `${BASE_URL}q=${this.name}&page=${this.page}&${searchParams}`;
 
     const response = await axios.get(url);
