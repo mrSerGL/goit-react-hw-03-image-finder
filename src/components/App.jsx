@@ -96,7 +96,6 @@ export default class App extends Component {
           />
         </ul>
         {this.state.isLoading && <Loader />}
-        {/* <Button onNextPage={this.onNextPage} /> */}
         {this.state.showBtn && <Button onNextPage={this.onNextPage} />}
         {this.state.showModal && (
           <Modal

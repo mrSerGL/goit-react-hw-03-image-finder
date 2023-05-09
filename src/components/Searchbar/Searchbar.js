@@ -21,7 +21,7 @@ class Searchbar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.onSubmit(this.state.searchQuery);
-    // this.setState({ inputData: '' });
+
   };
 
   render() {
@@ -44,6 +44,11 @@ class Searchbar extends Component {
               autoFocus
               placeholder="Search images and photos"
               onChange={this.onChangeInput}
+              onKeyDown={event => {
+                if (event.code === 'Enter') {
+                  this.handleSubmit(event);
+                }
+              }}
             />
           </form>
         </header>
