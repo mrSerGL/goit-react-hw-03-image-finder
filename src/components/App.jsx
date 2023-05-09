@@ -35,6 +35,16 @@ export default class App extends Component {
       await galleryService.getImages(this.state.searchQuery).then(response => {
         this.setState({ firstPage: response.hits });
         this.setState({ isLoading: false });
+        if (response.hits.length < 12) {
+          this.setState({ showBtn: false });
+        }
+        if (response.hits.length === 12) {
+          this.setState({ showBtn: true });
+        }
+        if (response.hits.length === 0) {
+          Notiflix.Notify.failure('No matches found!');
+        }
+
       });
     } catch (error) {
       console.log('onSubmit say:', error.message);
@@ -81,7 +91,8 @@ export default class App extends Component {
           <ImageGallery firstPage={this.state.firstPage} onClickImage={this.onClickImage}/>
         </ul>
         {this.state.isLoading && <Loader />}
-        <Button onNextPage={this.onNextPage} />
+        {/* <Button onNextPage={this.onNextPage} /> */}
+        {this.state.showBtn && <Button onNextPage={this.onNextPage} />}
         {this.state.showModal && (
           <Modal
             largeImageURL={this.state.largeImageURL}

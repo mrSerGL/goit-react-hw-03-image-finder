@@ -32,3 +32,7 @@
     background-size: contain;
     cursor: pointer;
   }
+
+  .input{
+    outline: none;
+  }

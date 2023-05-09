@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const BASE_URL = 'https://pixabay.com/api/?';
@@ -13,23 +12,17 @@ const searchParams = new URLSearchParams({
   per_page: 12,
 });
 export default class GalleryService {
-    constructor(name) {
-      this.name = '';
-      this.page = 1;
-
-    }
-  
-    async getImages(name) {
-      console.log(this.props)
-      const url = `${BASE_URL}q=${this.name}&page=${this.page}&${searchParams}`;
-  
-      const response = await axios.get(url);
-  
-      const images = response.data;
-
-      return images;
-    }
-  
-
+  constructor(name) {
+    this.name = '';
+    this.page = 1;
   }
-  
+
+  async getImages(name) {
+    console.log(this.props);
+    const url = `${BASE_URL}q=${this.name}&page=${this.page}&${searchParams}`;
+
+    const response = await axios.get(url);
+
+    return response.data;
+  }
+}
